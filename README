@@ -1,0 +1,24 @@
+Журнализатор изменений сущностей(Entity) hibernate
+- Вычисляет изменения сущностей
+- Журналирует изменения в той же транзакции(создает запись в таблице с отражением характера изменений)
+- Поддерживаются простейшие типы отражения(примитивы, массивы примитивов, многие/один-к-одному, embedded)
+
+Пишет записи журнала изменения в тот же SessionFactory, в таблицу с метаданными:
+CREATE TABLE [Entity_Change_Log] (
+	[trx_name] [nvarchar](250) NOT NULL,
+	[tstamp] [datetime] NOT NULL,
+	[subject] [nvarchar](250) NOT NULL,
+	[change_desc] [nvarchar](max) NULL,
+	PRIMARY KEY CLUSTERED ( [trx_name] ASC )
+)
+GO
+
+Для включения достаточно добавить в application context bean конфигурации:
+    <bean class="ru.dmkuranov.hibernate_audit.HibernateAuditConfig"/>
+
+    <!--
+    Сервис чтения данных из журнала
+    -->
+    <bean class="ru.dmkuranov.hibernate_audit.util.HibernateAuditLogRetriever">
+        <constructor-arg name="dataSource" ref="dbPool"/>
+    </bean>

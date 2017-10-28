@@ -1,0 +1,11 @@
+/target
+/dependencies/target
+/hibernate_audit/target
+/test/target
+/.externalToolBuilders
+/.settings
+/.classpath
+/.project
+/.idea
+*.iml
+src/main/metamodel
